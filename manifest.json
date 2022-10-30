@@ -1,0 +1,46 @@
+{
+  "name": "인터파크 티켓 도우미",
+  "version": "0.3",
+  "description": "예매창에서 빈 자리를 찾는 일을 도와줍니다.",
+  "manifest_version": 3,
+  "content_scripts": [
+    {
+      "matches": [
+        "https://poticket.interpark.com/**"
+      ],
+      "run_at": "document_start",
+      "js": [
+        "scripts/injector.js"
+      ]
+    },
+    {
+      "matches": [
+        "https://poticket.interpark.com/Book/BookMain.asp",
+        "https://poticket.interpark.com/SportsBook/BookMain.asp"
+      ],
+      "run_at": "document_start",
+      "js": [
+        "scripts/inject-booking.js"
+      ]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "injected/common.js",
+        "injected/booking.js"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
+  ],
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "cookies"
+  ],
+  "host_permissions": [
+    "https://poticket.interpark.com/"
+  ]
+}
