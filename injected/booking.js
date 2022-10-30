@@ -52,14 +52,7 @@ function buildTwoSeats() {
   }
 }
 
-function next() {
-  window.top
-    .window.frames.ifrmSeat
-    .window.document.querySelector('#NextStepImage')
-    .click();
-}
-
-onPressKey('1', () => {
+function one() {
   buildSeats();
   buildTwoSeats();
 
@@ -71,9 +64,9 @@ onPressKey('1', () => {
   const element = seats[0].element;
 
   element.click();
-});
+}
 
-onPressKey('2', () => {
+function two() {
   buildSeats();
   buildTwoSeats();
 
@@ -87,10 +80,41 @@ onPressKey('2', () => {
   for (const el of elements) {
     el.click();
   }
+}
+
+function next() {
+  window.top
+    .window.frames.ifrmSeat
+    .window.document.querySelector('#NextStepImage')
+    .click();
+}
+
+function prepareKeys() {
+  onPressKey('1', one);
+
+  onPressKey('2', two);
+
+  onPressKey('9', next);
+}
+
+window.top.window.addEventListener('load', function () {
+  const w = window.top.window.frames.ifrmSeat.window;
+
+  const original = w.KBOGate.SetSeat;
+
+  w.KBOGate.SetSeat = function () {
+    original(...arguments);
+
+    console.log('hijacked');
+
+    setTimeout(prepareKeys, 500);
+
+    // waitForElement(
+    //   window.top.window.document.querySelector('#ifrmSeat').contentWindow,
+    //   '#ifrmSeatDetail'
+    // ).then(prepareKeys);
+  };
 });
 
-onPressKey('9', () => {
-  next();
-})
 
 

@@ -8,28 +8,26 @@
  * @param key 어떠한 키가 눌렸을 때에 동작을 수행할까요?
  * @param action 키가 눌렸을 때, 어떤 동작을 수행할까요?
  */
-function onPressKey(key, action) {
-  window.top.window.addEventListener('load', async function () {
-    const topWindow = window.top.window;
-    console.log(topWindow);
+async function onPressKey(key, action) {
+  const topWindow = window.top.window;
+  console.log(topWindow);
 
-    const seat = await waitForElement(topWindow, '#ifrmSeat').then(f => f.contentWindow);
-    const seatView = await waitForElement(seat, '#ifrmSeatView').then(f => f.contentWindow);
-    const seatDetail = await waitForElement(seat, '#ifrmSeatDetail').then(f => f.contentWindow);
+  const seat = await waitForElement(topWindow, '#ifrmSeat').then(f => f.contentWindow);
+  // const seatView = await waitForElement(seat, '#ifrmSeatView').then(f => f.contentWindow);
+  const seatDetail = await waitForElement(seat, '#ifrmSeatDetail').then(f => f.contentWindow);
 
-    for (const w of [topWindow, seat, seatView, seatDetail]) {
-      console.log(`${w.name} will respond on key ${key}`);
+  for (const w of [topWindow, seat, /*seatView,*/ seatDetail]) {
+    console.log(`${w.name} will respond on key ${key}`);
 
-      w.addEventListener('keypress', async function (e) {
-        if (e.key === key) {
-          console.log(`In ${w.name}, ${key} key is pressed.`);
-          action();
-        }
-      }, false);
+    w.addEventListener('keypress', async function (e) {
+      if (e.key === key) {
+        console.log(`In ${w.name}, ${key} key is pressed.`);
+        action();
+      }
+    }, false);
 
-      console.log(`Now, ${w.name} will respond on ${key} key press.`);
-    }
-  });
+    console.log(`Now, ${w.name} will respond on ${key} key press.`);
+  }
 }
 
 function waitForElement(targetWindow, selector) {
